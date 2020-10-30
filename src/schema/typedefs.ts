@@ -1,11 +1,19 @@
 import { gql } from '@apollo/client';
 
-// Alias the response for clarity
-export const GET_PROJECTS_QUERY = gql`
+export const GET_PROJECTS = gql`
+   query {
+      Project {
+         _id
+         name
+         description
+      }
+   }
+`;
+
+export const GET_PROJECT = gql`
    query($id: String!) {
       Project(_id: $id) {
          _id
-         name
          categories(orderBy: order_asc) {
             _id
             title
@@ -13,12 +21,20 @@ export const GET_PROJECTS_QUERY = gql`
             titleBackgroundColor
             backgroundColor
             titleColor
-            items(orderBy: order_asc) {
-               _id
-               order
-               summary
-               description
-            }
+         }
+      }
+   }
+`;
+
+export const GET_CATEGORY_ITEMS = gql`
+   query Category($id: String!) {
+      Category(_id: $id) {
+         _id
+         items(orderBy: order_asc) {
+            _id
+            order
+            summary
+            description
          }
       }
    }
@@ -68,6 +84,27 @@ export const ITEMS_BY_CATEGORY = gql`
             summary
             description
             order
+         }
+      }
+   }
+`;
+
+export const DELETE_ITEM = gql`
+   mutation DeleteItem($id: ID!) {
+      DeleteItem(id: $id) {
+         _id
+      }
+   }
+`;
+
+export const REMOVE_ITEM_CATEGORY = gql`
+   mutation RemoveItemCategory($from: _ItemInput!, $to: _CategoryInput!) {
+      RemoveItemCategory(from: $from, to: $to) {
+         from {
+            _id
+         }
+         to {
+            _id
          }
       }
    }

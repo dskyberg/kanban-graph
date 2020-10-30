@@ -112,8 +112,8 @@ const CategoryList: React.FC<CategoryListProps> = ({ categories, onChange }: Cat
             </TableRow>
          </TableHead>
          <TableBody>
-            {categories.map((category: any, index: number) => (
-               <CategoryRow key={index} category={category} onChange={onChange} />
+            {categories.map((category: Category) => (
+               <CategoryRow key={category.title} category={category} onChange={onChange} />
             ))}
          </TableBody>
       </Table>

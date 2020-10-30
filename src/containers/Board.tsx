@@ -1,13 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Category, Item } from '../schema';
-import { GET_PROJECTS_QUERY, UPDATE_CATEGORY, UPDATE_ITEM, CREATE_ITEM, ITEMS_BY_CATEGORY } from '../schema';
+import { GET_PROJECT, UPDATE_CATEGORY, UPDATE_ITEM, CREATE_ITEM, DELETE_ITEM, ITEMS_BY_CATEGORY } from '../schema';
 import { useSnackbar } from 'notistack';
 
 import { useQuery, useMutation } from '@apollo/client';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import { Box, Button, CircularProgress } from '@material-ui/core';
-
 import CardContainer from '../components/CardContainer';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -47,7 +46,7 @@ const Board: React.FC = () => {
    const { id } = useParams<ParamTypes>(); // Get route parameters
    const { enqueueSnackbar } = useSnackbar();
 
-   const { loading, error, data } = useQuery(GET_PROJECTS_QUERY, {
+   const { loading, error, data } = useQuery(GET_PROJECT, {
       variables: {
          id: id,
       },
@@ -72,8 +71,9 @@ const Board: React.FC = () => {
          console.log('createItem returned', result.data.UpdateItem);
       },
    });
+   const [deleteItem] = useMutation(DELETE_ITEM);
 
-   const handleUpdateCategory = (category: Category) => {
+   const handleUpdateCategory = (category: Category): void => {
       updateCategory({
          variables: {
             id: category._id,
@@ -94,21 +94,19 @@ const Board: React.FC = () => {
          });
    };
 
-   const handleUpdateItem = (item: Item) => {
+   const handleUpdateItem = (item: Item): void => {
       const input = {
          summary: item.summary,
          description: JSON.stringify(item.description),
          order: item.order,
       };
-      console.log('handleUpdateItem:', input);
       updateItem({
          variables: {
             id: item._id,
             input: input,
          },
       })
-         .then((result) => {
-            console.log('updateItem Promise returned:', result);
+         .then(() => {
             enqueueSnackbar('Item successfully updated', { variant: 'success' });
          })
          .catch((error) => {
@@ -117,7 +115,7 @@ const Board: React.FC = () => {
          });
    };
 
-   const handleCreateItem = (category: Category, item: Item) => {
+   const handleCreateItem = (category: Category, item: Item): void => {
       item.description = JSON.stringify(item.description);
       console.log('handleCreateItem:', category, item);
       createItem({
@@ -142,13 +140,28 @@ const Board: React.FC = () => {
          });
    };
 
-   /*
-   if (!data || !data.Project || data.Project.length !== 1) {
-      return <p>Error!</p>;
-   }
-*/
-   const project = data?.Project[0] ?? null;
+   const handleDeleteItem = (item: Item, category: Category): void => {
+      deleteItem({
+         variables: {
+            id: item._id,
+         },
+         refetchQueries: [
+            {
+               query: ITEMS_BY_CATEGORY,
+               variables: { id: `${category._id}` }, // Generated queries require _id as String, not ID
+            },
+         ],
+      })
+         .then(() => {
+            enqueueSnackbar('Item successfully deleted', { variant: 'success' });
+         })
+         .catch((error) => {
+            console.log('handleDeleteItem Error:', error);
+            enqueueSnackbar('Item delete failed', { variant: 'error' });
+         });
+   };
 
+   const project = data?.Project[0] ?? null;
    return (
       <div className={classes.root}>
          <div className={classes.board}>
@@ -169,10 +182,10 @@ const Board: React.FC = () => {
                      >
                         <CardContainer
                            category={category}
-                           members={category.items}
                            onCategoryChange={handleUpdateCategory}
                            onItemChange={handleUpdateItem}
                            onAddItem={handleCreateItem}
+                           onDeleteItem={handleDeleteItem}
                         />
                      </div>
                   );

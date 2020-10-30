@@ -1,6 +1,6 @@
 import React from 'react';
 import { Category } from '../schema';
-
+import useDoubleClick from '../util/use-double-click';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, IconButton } from '@material-ui/core';
 import { Edit as EditIcon, Add as AddIcon } from '@material-ui/icons';
@@ -27,23 +27,35 @@ const useStyles = makeStyles((theme) => ({
 
 interface CardContainerHeaderProps {
    category: Category;
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
    onChange: (category: Category) => void;
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
    onAction: (action: string) => void;
 }
 
-const CardContainerHeader = ({ category, onChange, onAction }: CardContainerHeaderProps) => {
+const CardContainerHeader: React.FC<CardContainerHeaderProps> = ({
+   category,
+   onChange,
+   onAction,
+}: CardContainerHeaderProps) => {
    const theme = useTheme();
    const classes = useStyles(theme);
    const [categoryDialogOpen, setCategoryDialogOpen] = React.useState(false);
+   const dcRef = React.useRef<HTMLElement>();
 
-   const handleEditClicked = () => {
-      setCategoryDialogOpen(true);
-   };
-   const handleAddClicked = () => {
+   useDoubleClick({
+      ref: dcRef,
+      latency: 250,
+      onDoubleClick: (): void => {
+         setCategoryDialogOpen(true);
+      },
+   });
+
+   const handleAddClicked = (): void => {
       onAction('add');
    };
 
-   const handleChange = (updatedCategory: Category) => {
+   const handleChange = (updatedCategory: Category): void => {
       setCategoryDialogOpen(false);
       onChange(updatedCategory);
    };
@@ -62,7 +74,7 @@ const CardContainerHeader = ({ category, onChange, onAction }: CardContainerHead
                {category.title}
             </Typography>
             <span>
-               <IconButton onClick={handleEditClicked}>
+               <IconButton buttonRef={dcRef}>
                   <EditIcon />
                </IconButton>
                <IconButton onClick={handleAddClicked}>

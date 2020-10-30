@@ -42,9 +42,9 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }: ProjectListProps)
             </TableRow>
          </TableHead>
          <TableBody>
-            {projects.map((project: any, index: number) => {
+            {projects.map((project: any) => {
                return (
-                  <TableRow key={index} id={`project-row-${project._id}`}>
+                  <TableRow key={project.name} id={`project-row-${project._id}`}>
                      <TableCell id={`project-row-${project._id}-id`}>
                         <Button variant="outlined" color="primary" href={`/board/${project._id}`}>
                            {project._id}
