@@ -196,7 +196,7 @@ const CardDialog: React.FC = observer(() => {
          onCancel();
       }
    };
-   console.log('CardDialog rendering', open);
+
    return (
       <React.Fragment>
          <Dialog open={open} maxWidth="lg">

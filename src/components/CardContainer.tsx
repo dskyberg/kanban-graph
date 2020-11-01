@@ -100,7 +100,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
    if (error) {
       return <p>Error!</p>;
    }
-   console.log(`CardContainer (${category.title}):`, data.Category[0].items);
+
    const members: Item[] = data.Category[0].items;
 
    return (
