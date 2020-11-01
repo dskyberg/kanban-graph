@@ -110,13 +110,13 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ color: propColor, onChange }:
    const [displayPicker, setDisplayPicker] = React.useState(false);
    const [color, setColor] = React.useState(propColor);
    React.useEffect(() => {
-      const handleEsc = (event: KeyboardEvent) => {
+      const handleEsc = (event: KeyboardEvent): void => {
          if (event.keyCode === 27) {
             setDisplayPicker(false);
          }
       };
       window.addEventListener('keydown', handleEsc);
-      return () => {
+      return (): void => {
          window.removeEventListener('keydown', handleEsc);
       };
    }, []);
@@ -125,7 +125,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ color: propColor, onChange }:
       setColor(selected.hex);
    };
 
-   const handleClick = () => {
+   const handleClick = (): void => {
       setDisplayPicker(!displayPicker);
       if (displayPicker && color !== propColor) {
          onChange(color);

@@ -190,7 +190,7 @@ const CardDialog: React.FC = observer(() => {
       cardDialogState.reset();
    };
 
-   const handleCancel = () => {
+   const handleCancel = (): void => {
       cardDialogState.reset();
       if (onCancel !== undefined) {
          onCancel();

@@ -94,7 +94,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = (props: RichTextEditorProp
    const readOnly = props.readOnly ?? false;
    const placeholder = props.placeholder ?? 'Enter some rich text…';
 
-   const handleChange = (value: Node[]) => {
+   const handleChange = (value: Node[]): void => {
       if (props.onChange !== undefined) {
          props.onChange(value);
       }
@@ -110,7 +110,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = (props: RichTextEditorProp
             placeholder={placeholder}
             spellCheck
             autoFocus
-            onKeyDown={(event) => {
+            onKeyDown={(event): void => {
                for (const hotkey in HOTKEYS) {
                   if (isHotkey(hotkey, event as any)) {
                      event.preventDefault();
