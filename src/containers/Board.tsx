@@ -1,6 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Category, Item } from '../schema';
+import { serialize } from '../components/RichTextEditor';
+
 import { GET_PROJECT, UPDATE_CATEGORY, UPDATE_ITEM, CREATE_ITEM, DELETE_ITEM, ITEMS_BY_CATEGORY } from '../schema';
 import { useSnackbar } from 'notistack';
 
@@ -9,7 +11,6 @@ import { useTheme, makeStyles } from '@material-ui/core/styles';
 import { Box, Button, CircularProgress } from '@material-ui/core';
 import CardContainer from '../components/CardContainer';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme) => ({
    root: {
       width: '100%',
@@ -51,26 +52,9 @@ const Board: React.FC = () => {
          id: id,
       },
    });
-
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-   const [updateCategory] = useMutation(UPDATE_CATEGORY, {
-      update(cache, result) {
-         console.log('updateCategory returned', result.data.UpdateCategory);
-      },
-   });
-
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-   const [updateItem] = useMutation(UPDATE_ITEM, {
-      update(cache, result) {
-         console.log('updateItem returned', result.data.UpdateItem);
-      },
-   });
-
-   const [createItem] = useMutation(CREATE_ITEM, {
-      update(cache, result) {
-         console.log('createItem returned', result.data.UpdateItem);
-      },
-   });
+   const [updateCategory] = useMutation(UPDATE_CATEGORY);
+   const [updateItem] = useMutation(UPDATE_ITEM);
+   const [createItem] = useMutation(CREATE_ITEM);
    const [deleteItem] = useMutation(DELETE_ITEM);
 
    const handleUpdateCategory = (category: Category): void => {
@@ -97,7 +81,7 @@ const Board: React.FC = () => {
    const handleUpdateItem = (item: Item): void => {
       const input = {
          summary: item.summary,
-         description: JSON.stringify(item.description),
+         description: serialize(item.description),
          order: item.order,
       };
       updateItem({
@@ -116,7 +100,7 @@ const Board: React.FC = () => {
    };
 
    const handleCreateItem = (category: Category, item: Item): void => {
-      item.description = JSON.stringify(item.description);
+      item.description = serialize(item.description);
       console.log('handleCreateItem:', category, item);
       createItem({
          variables: {

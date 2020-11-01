@@ -11,7 +11,7 @@ import Element from './Element';
 
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
 const useStyles = makeStyles((theme) => ({
    root: {
       width: '100%',
@@ -31,6 +31,21 @@ const HOTKEYS: StringMap = {
    'mod+i': 'italic',
    'mod+u': 'underline',
    'mod+`': 'code',
+};
+
+export const serialize = (input: Node[] | string | null | undefined): string => {
+   if (input === null || input === undefined) {
+      return '';
+   }
+   if (typeof input === 'string') {
+      return input;
+   }
+   try {
+      return JSON.stringify(input);
+   } catch (error) {
+      console.log(error);
+      return '';
+   }
 };
 
 export const deserialize = (input: Node[] | string | any | null | undefined): Node[] => {

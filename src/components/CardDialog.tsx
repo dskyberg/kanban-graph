@@ -3,7 +3,7 @@ import { makeObservable, action, observable } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Category, Item } from '../schema';
 import { Node } from 'slate';
-import RichTextEditor, { deserialize } from './RichTextEditor';
+import RichTextEditor, { serialize, deserialize } from './RichTextEditor';
 import {
    Button,
    TextField,
@@ -172,17 +172,17 @@ const CardDialog: React.FC = observer(() => {
    };
    */
 
-   const handleDescriptionChange = (value: Node[]) => {
+   const handleDescriptionChange = (value: Node[]): void => {
       cardDialogState.setDescription(value);
    };
 
-   const handleSave = () => {
+   const handleSave = (): void => {
       const updates = {
          summary: summary,
-         description: description,
+         description: serialize(description),
       };
 
-      const newItem = Object.assign({}, item, updates);
+      const newItem = { ...item, ...updates };
       if (onSave !== undefined) {
          onSave(newItem);
       }

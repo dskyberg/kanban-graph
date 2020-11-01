@@ -51,11 +51,11 @@ const CategoryDialog: React.FC<CategoryDialogProps> = ({ open, category, onCance
       category !== undefined ? category.titleBackgroundColor : '#ffffff',
    );
 
-   const handleTitleChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+   const handleTitleChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
       setTitle(event.currentTarget.value);
    };
 
-   const handleColorChange = (color: string, name: string) => {
+   const handleColorChange = (color: string, name: string): void => {
       switch (name) {
          case 'titleBackgroundColor':
             setTitleBackgroundColor(color);
@@ -68,7 +68,7 @@ const CategoryDialog: React.FC<CategoryDialogProps> = ({ open, category, onCance
       }
    };
 
-   const handleUpdate = () => {
+   const handleUpdate = (): void => {
       const updates = {
          title: title,
          backgroundColor: backgroundColor,
@@ -76,12 +76,12 @@ const CategoryDialog: React.FC<CategoryDialogProps> = ({ open, category, onCance
       };
       // TODO --- Fix this so that _id is optional. Want to be able to use this.
       // dialog for both create and edit.
-      const newCategory = Object.assign({}, category, updates);
+      const newCategory = { ...category, ...updates };
       console.log('CategoryDialog - newCategory:', newCategory);
       onSave(newCategory);
    };
 
-   const handleCancel = () => {
+   const handleCancel = (): void => {
       onCancel();
    };
    const dialogTitle = category === undefined ? 'Add a category' : 'Edit a category';
@@ -103,7 +103,7 @@ const CategoryDialog: React.FC<CategoryDialogProps> = ({ open, category, onCance
                   control={
                      <ColorPicker
                         color={titleBackgroundColor || '#000'}
-                        onChange={(color: string) => {
+                        onChange={(color: string): void => {
                            handleColorChange(color, 'titleBackgroundColor');
                         }}
                      />
@@ -115,7 +115,7 @@ const CategoryDialog: React.FC<CategoryDialogProps> = ({ open, category, onCance
                   control={
                      <ColorPicker
                         color={backgroundColor}
-                        onChange={(color: string) => {
+                        onChange={(color: string): void => {
                            handleColorChange(color, 'backgroundColor');
                         }}
                      />

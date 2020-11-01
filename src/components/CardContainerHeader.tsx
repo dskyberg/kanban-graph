@@ -2,8 +2,8 @@ import React from 'react';
 import { Category } from '../schema';
 import useDoubleClick from '../util/use-double-click';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
-import { Box, Typography, IconButton } from '@material-ui/core';
-import { Edit as EditIcon, Add as AddIcon } from '@material-ui/icons';
+import { Typography, IconButton } from '@material-ui/core';
+import { Add as AddIcon } from '@material-ui/icons';
 import CategoryDialog from './CategoryDialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -13,6 +13,10 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
       marginBottom: theme.spacing(2),
       overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'nowrap',
+      alignItems: 'center',
    },
    headerText: {
       marginLeft: 10,
@@ -27,9 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface CardContainerHeaderProps {
    category: Category;
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
    onChange: (category: Category) => void;
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
    onAction: (action: string) => void;
 }
 
@@ -41,9 +43,9 @@ const CardContainerHeader: React.FC<CardContainerHeaderProps> = ({
    const theme = useTheme();
    const classes = useStyles(theme);
    const [categoryDialogOpen, setCategoryDialogOpen] = React.useState(false);
-   const dcRef = React.useRef<HTMLElement>();
+   const dcRef = React.useRef<HTMLDivElement>(null);
 
-   useDoubleClick({
+   useDoubleClick<HTMLDivElement>({
       ref: dcRef,
       latency: 250,
       onDoubleClick: (): void => {
@@ -62,31 +64,26 @@ const CardContainerHeader: React.FC<CardContainerHeaderProps> = ({
 
    return (
       <div>
-         <Box
+         <div
+            ref={dcRef}
             className={classes.header}
             id="card-container-header"
-            display="flex"
-            flexDirection="row"
-            flexWrap="nowrap"
             style={{ backgroundColor: category.titleBackgroundColor }}
          >
-            <Typography align="center" className={classes.headerText}>
+            <Typography align="center" gutterBottom={false} paragraph={false} className={classes.headerText}>
                {category.title}
             </Typography>
             <span>
-               <IconButton buttonRef={dcRef}>
-                  <EditIcon />
-               </IconButton>
                <IconButton onClick={handleAddClicked}>
                   <AddIcon />
                </IconButton>
             </span>
-         </Box>
+         </div>
          <CategoryDialog
             open={categoryDialogOpen}
             category={category}
             onSave={handleChange}
-            onCancel={() => {
+            onCancel={(): void => {
                setCategoryDialogOpen(false);
             }}
          />

@@ -35,10 +35,8 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }: ProjectListProps)
       <Table id="project-list" className={classes.table}>
          <TableHead>
             <TableRow id="project-list-header">
-               <TableCell id="project-list-header-name">ID</TableCell>
                <TableCell id="project-list-header-name">Name</TableCell>
                <TableCell id="project-list-header-description">Description</TableCell>
-               <TableCell>Categories</TableCell>
             </TableRow>
          </TableHead>
          <TableBody>
