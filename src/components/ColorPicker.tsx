@@ -68,7 +68,7 @@ const presets = [
    blueGrey[100],
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
 const useStyles = makeStyles((theme) => ({
    root: {
       width: 46,

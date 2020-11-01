@@ -10,7 +10,7 @@ import { Add as AddIcon } from '@material-ui/icons';
 import CardContainerHeader from './CardContainerHeader';
 import Card from './Card';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
 const useStyles = makeStyles((theme) => ({
    root: {
       backgroundColor: 'lightgrey',
@@ -26,13 +26,9 @@ const useStyles = makeStyles((theme) => ({
 interface CardContainerProps {
    category: Category;
    item?: Item;
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
    onCategoryChange: (category: Category) => void;
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
    onItemChange: (item: Item) => void;
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
    onAddItem: (category: Category, item: Item) => void;
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
    onDeleteItem: (item: Item, category: Category) => void;
 }
 

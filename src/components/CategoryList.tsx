@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow, InputBase, IconButton
 import { Save as SaveIcon, Undo as UndoIcon } from '@material-ui/icons';
 import ColorPicker from './ColorPicker';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
 const useStyles = makeStyles((theme) => ({
    root: {
       width: '100%',
@@ -29,7 +29,7 @@ const CategoryRow: React.FC<CategoryRowProps> = ({ category, onChange }: Categor
    const [titleBackgroundColor, setTitleBackgroundColor] = React.useState(category.titleBackgroundColor);
    const [backgroundColor, setBackgroundColor] = React.useState(category.backgroundColor);
 
-   const handleColorChange = (color: string, name: string) => {
+   const handleColorChange = (color: string, name: string): void => {
       switch (name) {
          case 'titleBackgroundColor':
             setTitleBackgroundColor(color);
@@ -41,20 +41,23 @@ const CategoryRow: React.FC<CategoryRowProps> = ({ category, onChange }: Categor
             console.log('handleColorChange - unknown color:', name);
       }
    };
-   const handleTitleChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+   const handleTitleChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
       setTitle(event.currentTarget.value);
    };
 
-   const handleUpdate = () => {
-      const newCategory = Object.assign({}, category, {
-         title: title,
-         backgroundColor: backgroundColor,
-         titleBackgroundColor: titleBackgroundColor,
-      });
+   const handleUpdate = (): void => {
+      const newCategory = {
+         ...category,
+         ...{
+            title: title,
+            backgroundColor: backgroundColor,
+            titleBackgroundColor: titleBackgroundColor,
+         },
+      };
       onChange(newCategory);
    };
 
-   const handleUndo = () => {
+   const handleUndo = (): void => {
       setTitle(category.title);
       setBackgroundColor(category.backgroundColor);
       setTitleBackgroundColor(category.titleBackgroundColor);
@@ -68,7 +71,7 @@ const CategoryRow: React.FC<CategoryRowProps> = ({ category, onChange }: Categor
          <TableCell className={classes.colorCell}>
             <ColorPicker
                color={backgroundColor}
-               onChange={(color: string) => {
+               onChange={(color: string): void => {
                   handleColorChange(color, 'backgroundColor');
                }}
             />
@@ -76,7 +79,7 @@ const CategoryRow: React.FC<CategoryRowProps> = ({ category, onChange }: Categor
          <TableCell className={classes.colorCell}>
             <ColorPicker
                color={titleBackgroundColor || '#000'}
-               onChange={(color: string) => {
+               onChange={(color: string): void => {
                   handleColorChange(color, 'titleBackgroundColor');
                }}
             />
