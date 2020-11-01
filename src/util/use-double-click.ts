@@ -8,14 +8,15 @@ import React from 'react';
  * @param {function} onSingleClick A callback function for single click events
  * @param {function} onDoubleClick A callback function for double click events
  */
-type useDoubleClickProps = {
-   ref: React.MutableRefObject<HTMLElement | undefined>;
+
+type useDoubleClickProps<T extends HTMLElement> = {
+   ref: React.RefObject<T>;
    latency: number;
    onSingleClick?: () => void;
    onDoubleClick?: () => void;
 };
 
-const useDoubleClick = ({
+const useDoubleClick = <T extends HTMLElement>({
    ref,
    latency = 300,
    onSingleClick = (): void => {
@@ -24,7 +25,7 @@ const useDoubleClick = ({
    onDoubleClick = (): void => {
       return;
    },
-}: useDoubleClickProps): void => {
+}: useDoubleClickProps<T>): void => {
    React.useEffect(() => {
       const clickRef = ref?.current;
       let clickCount = 0;
@@ -40,13 +41,13 @@ const useDoubleClick = ({
       };
 
       // Add event listener for click events
-      if (clickRef !== undefined) {
+      if (clickRef !== undefined && clickRef !== null) {
          clickRef.addEventListener('click', handleClick);
       }
 
       // Remove event listener
       return (): void => {
-         if (clickRef !== undefined) {
+         if (clickRef !== undefined && clickRef !== null) {
             clickRef.removeEventListener('click', handleClick);
          }
       };
