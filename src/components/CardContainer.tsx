@@ -10,8 +10,7 @@ import { Add as AddIcon } from '@material-ui/icons';
 import CardContainerHeader from './CardContainerHeader';
 import Card from './Card';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_) => ({
    root: {
       backgroundColor: 'lightgrey',
       marginLeft: '10',

@@ -7,8 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow, InputBase, IconButton
 import { Save as SaveIcon, Undo as UndoIcon } from '@material-ui/icons';
 import ColorPicker from './ColorPicker';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_) => ({
    root: {
       width: '100%',
    },

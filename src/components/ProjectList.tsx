@@ -1,7 +1,6 @@
 import React from 'react';
-
-import { useTheme, makeStyles } from '@material-ui/core/styles';
-
+import { useHistory } from 'react-router-dom';
+import { useTheme, makeStyles, lighten } from '@material-ui/core/styles';
 import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -14,6 +13,16 @@ const useStyles = makeStyles((theme) => ({
    table: {
       minWidth: 700,
    },
+   highlight:
+      theme.palette.type === 'light'
+         ? {
+              color: theme.palette.secondary.main,
+              backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+           }
+         : {
+              color: theme.palette.text.primary,
+              backgroundColor: theme.palette.secondary.dark,
+           },
 }));
 
 type ProjectData = {
@@ -30,11 +39,17 @@ interface ProjectListProps {
 const ProjectList: React.FC<ProjectListProps> = ({ projects }: ProjectListProps) => {
    const theme = useTheme();
    const classes = useStyles(theme);
+   const history = useHistory();
+
+   const handleRowClick = (_: React.MouseEvent<HTMLTableRowElement, MouseEvent>, id: any): void => {
+      history.push(`/board/${id}`);
+   };
 
    return (
       <Table id="project-list" className={classes.table}>
          <TableHead>
             <TableRow id="project-list-header">
+               <TableCell id="project-list-header-id">ID</TableCell>
                <TableCell id="project-list-header-name">Name</TableCell>
                <TableCell id="project-list-header-description">Description</TableCell>
             </TableRow>
@@ -42,12 +57,13 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }: ProjectListProps)
          <TableBody>
             {projects.map((project: any) => {
                return (
-                  <TableRow key={project.name} id={`project-row-${project._id}`}>
-                     <TableCell id={`project-row-${project._id}-id`}>
-                        <Button variant="outlined" color="primary" href={`/board/${project._id}`}>
-                           {project._id}
-                        </Button>
-                     </TableCell>
+                  <TableRow
+                     hover
+                     key={project.name}
+                     id={`project-row-${project._id}`}
+                     onClick={(event): void => handleRowClick(event, project._id)}
+                  >
+                     <TableCell id={`project-row-${project._id}-id`}>{project._id}</TableCell>
                      <TableCell id={`project-row-${project._id}-name`}>{project.name}</TableCell>
                      <TableCell id={`project-row-${project._id}-description`}>{project.description}</TableCell>
                   </TableRow>
