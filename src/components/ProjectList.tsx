@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTheme, makeStyles, lighten } from '@material-ui/core/styles';
-import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Project } from '../schema';
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -25,15 +26,8 @@ const useStyles = makeStyles((theme) => ({
            },
 }));
 
-type ProjectData = {
-   __typeName: string;
-   _id: string;
-   name: string;
-   description?: string;
-};
-
 interface ProjectListProps {
-   projects: ProjectData[];
+   projects: Project[];
 }
 
 const ProjectList: React.FC<ProjectListProps> = ({ projects }: ProjectListProps) => {
@@ -41,8 +35,8 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }: ProjectListProps)
    const classes = useStyles(theme);
    const history = useHistory();
 
-   const handleRowClick = (_: React.MouseEvent<HTMLTableRowElement, MouseEvent>, id: any): void => {
-      history.push(`/board/${id}`);
+   const handleRowClick = (_: React.MouseEvent<HTMLTableRowElement, MouseEvent>, project: Project): void => {
+      history.push(`/board/${project?._id}`);
    };
 
    return (
@@ -55,13 +49,13 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }: ProjectListProps)
             </TableRow>
          </TableHead>
          <TableBody>
-            {projects.map((project: any) => {
+            {projects.map((project: Project) => {
                return (
                   <TableRow
                      hover
                      key={project.name}
                      id={`project-row-${project._id}`}
-                     onClick={(event): void => handleRowClick(event, project._id)}
+                     onClick={(event): void => handleRowClick(event, project)}
                   >
                      <TableCell id={`project-row-${project._id}-id`}>{project._id}</TableCell>
                      <TableCell id={`project-row-${project._id}-name`}>{project.name}</TableCell>
