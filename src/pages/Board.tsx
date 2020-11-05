@@ -30,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
    },
    category: {
       margin: theme.spacing(2),
+      leftMargin: 'auto',
+      rightMargin: 'auto',
       padding: theme.spacing(2),
    },
    returnButton: {

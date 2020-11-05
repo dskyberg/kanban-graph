@@ -14,7 +14,6 @@ import Card from './Card';
 const useStyles = makeStyles((theme) => ({
    root: {
       backgroundColor: 'lightgrey',
-      minWidth: 300,
       marginLeft: '10',
       marginRight: '10',
    },
@@ -104,7 +103,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
    const members: Item[] = data.Category[0].items;
 
    return (
-      <Box className={classes.root} style={{ backgroundColor: category.backgroundColor }}>
+      <div className={classes.root} style={{ backgroundColor: category.backgroundColor }}>
          {!item && (
             <CardContainerHeader category={category} onChange={onCategoryChange} onAction={handleHeaderAction} />
          )}
@@ -121,7 +120,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
                <AddIcon />
             </Fab>
          </Box>
-      </Box>
+      </div>
    );
 };
 export default CardContainer;
