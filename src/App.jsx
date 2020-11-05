@@ -1,10 +1,10 @@
-/* tslint:disable */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import Home from './containers/Home';
-import Projects from './containers/Projects';
-import Board from './containers/Board';
+import Home from './pages/Home';
+import Projects from './pages/Projects';
+import Board from './pages/Board';
 import CardDialog from './components/CardDialog';
 import { SnackbarProvider } from 'notistack';
 
@@ -67,7 +67,6 @@ const App = () => {
                </Container>
             </main>
             <CardDialog />
-
          </div>
       </SnackbarProvider>
    );
