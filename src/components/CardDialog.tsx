@@ -55,7 +55,7 @@ class CardDialogState {
       });
    }
 
-   @action reset(): void {
+   reset(): void {
       this.open = false;
       this.item = undefined;
       this.category = undefined;
@@ -66,7 +66,7 @@ class CardDialogState {
       this.onDelete = undefined;
    }
 
-   @action setProps({ open, item, category, onSave, onCancel, onDelete }: CardDialogProps): void {
+   setProps({ open, item, category, onSave, onCancel, onDelete }: CardDialogProps): void {
       if (open === false) {
          this.reset();
       } else {
@@ -81,18 +81,18 @@ class CardDialogState {
       }
    }
 
-   @action setOpen(value: boolean): void {
+   setOpen(value: boolean): void {
       this.open = value;
    }
 
-   @action setItem(value: Item): void {
+   setItem(value: Item): void {
       this.item = value;
    }
 
-   @action setSummary(value: string): void {
+   setSummary(value: string): void {
       this.summary = value;
    }
-   @action setDescription(value: Node[]): void {
+   setDescription(value: Node[]): void {
       this.description = value;
    }
 }
