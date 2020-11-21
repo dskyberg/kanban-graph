@@ -1,7 +1,7 @@
 import React from 'react';
 import { Category } from '../schema';
 import useDoubleClick from '../util/use-double-click';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Typography, IconButton } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
 import CategoryDialog from './CategoryDialog';
@@ -40,8 +40,7 @@ const CardContainerHeader: React.FC<CardContainerHeaderProps> = ({
    onChange,
    onAction,
 }: CardContainerHeaderProps) => {
-   const theme = useTheme();
-   const classes = useStyles(theme);
+   const classes = useStyles();
    const [categoryDialogOpen, setCategoryDialogOpen] = React.useState(false);
    const dcRef = React.useRef<HTMLDivElement>(null);
 

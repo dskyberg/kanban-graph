@@ -1,34 +1,41 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
+import { crumbsState } from '../components/Crumbs';
 import ProjectList from '../components/ProjectList';
 import { GET_PROJECTS } from '../schema';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
-import { Box, Button } from '@material-ui/core';
+import GraphError from '../components/GraphError';
+import { Box, CircularProgress } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-   homeButton: {
-      width: 250,
-      margin: theme.spacing(2),
-   },
-}));
+const ProgressBox: React.FC = () => {
+   return (
+      <Box display="flex" justifyContent="center">
+         <CircularProgress />
+      </Box>
+   );
+};
+
+
 
 const ProjectsContainer: React.FC = () => {
-   const theme = useTheme();
-   const classes = useStyles(theme);
+   React.useEffect(() => {
+      crumbsState.resetWith([
+         { href: '/', label: 'Home', active: false },
+         { href: '', label: 'Projects', active: true },
+      ]);
+   });
 
    const { loading, error, data } = useQuery(GET_PROJECTS);
-   if (loading) return <p>Loading...</p>;
-   if (error) {
-      console.log(error);
-      return <p>Error!</p>;
+
+   const onAdd = (): void => {
+      console.log('onAdd clicked');
    }
+
    return (
-      <Box display="flex" flexDirection="column">
-         <ProjectList projects={data.Project} />
-         <Button variant="contained" color="primary" className={classes.homeButton} href="/">
-            Return to Home
-         </Button>
-      </Box>
+      <div>
+         {loading && <ProgressBox />}
+         {error && <GraphError error={error} />}
+         {data && <ProjectList projects={data.Project} onAdd={onAdd} />}
+      </div>
    );
 };
 export default ProjectsContainer;

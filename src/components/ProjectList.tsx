@@ -1,70 +1,50 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useTheme, makeStyles, lighten } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import AddFab from './AddFab';
+
 import { Project } from '../schema';
+import ProjectCard from '../components/ProjectCard';
+
 
 const useStyles = makeStyles((theme) => ({
    root: {
-      maxWidth: 700,
+      width: '100%',
+      position: 'relative',
       marginTop: theme.spacing(3),
-      overflowX: 'auto',
-      margin: 'auto',
+      display: 'flex',
+      flexWrap: 'wrap',
    },
-   table: {
-      minWidth: 700,
+   fab: {
+      position: 'absolute',
+      top: theme.spacing(2),
+      right: theme.spacing(2),
    },
-   highlight:
-      theme.palette.type === 'light'
-         ? {
-              color: theme.palette.secondary.main,
-              backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-           }
-         : {
-              color: theme.palette.text.primary,
-              backgroundColor: theme.palette.secondary.dark,
-           },
 }));
 
 interface ProjectListProps {
    projects: Project[];
+   onAdd: () => void;
 }
 
-const ProjectList: React.FC<ProjectListProps> = ({ projects }: ProjectListProps) => {
-   const theme = useTheme();
-   const classes = useStyles(theme);
+const ProjectList: React.FC<ProjectListProps> = ({ projects, onAdd }: ProjectListProps) => {
+   const classes = useStyles();
    const history = useHistory();
 
-   const handleRowClick = (_: React.MouseEvent<HTMLTableRowElement, MouseEvent>, project: Project): void => {
-      history.push(`/board/${project?._id}`);
+   const handleAddClicked = (_: React.MouseEvent<HTMLButtonElement>): void => {
+      onAdd();
+   }
+   const handleCardClick = (_: React.MouseEvent<HTMLButtonElement, MouseEvent>, project: Project): void => {
+      history.push(`/board?id=${project?._id}&name=${encodeURIComponent(project.name)}`);
    };
 
    return (
-      <Table id="project-list" className={classes.table}>
-         <TableHead>
-            <TableRow id="project-list-header">
-               <TableCell id="project-list-header-id">ID</TableCell>
-               <TableCell id="project-list-header-name">Name</TableCell>
-               <TableCell id="project-list-header-description">Description</TableCell>
-            </TableRow>
-         </TableHead>
-         <TableBody>
-            {projects.map((project: Project) => {
-               return (
-                  <TableRow
-                     hover
-                     key={project.name}
-                     id={`project-row-${project._id}`}
-                     onClick={(event): void => handleRowClick(event, project)}
-                  >
-                     <TableCell id={`project-row-${project._id}-id`}>{project._id}</TableCell>
-                     <TableCell id={`project-row-${project._id}-name`}>{project.name}</TableCell>
-                     <TableCell id={`project-row-${project._id}-description`}>{project.description}</TableCell>
-                  </TableRow>
-               );
-            })}
-         </TableBody>
-      </Table>
+      <div className={classes.root}>
+         <AddFab className={classes.fab} onClick={handleAddClicked}/>
+         {projects.map((project: Project) => (
+            <ProjectCard key={project.name} project={project} onClick={handleCardClick} />
+         ))}
+      </div>
    );
 };
 

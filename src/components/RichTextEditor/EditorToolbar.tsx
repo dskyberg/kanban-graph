@@ -15,7 +15,7 @@ import {
    FormatQuote as FormatQuoteIcon,
 } from '@material-ui/icons';
 import grey from '@material-ui/core/colors/grey';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
    toolbar: {
@@ -63,8 +63,7 @@ const MarkButton: React.FC<ToolbarButtonProps> = ({ format, icon }: ToolbarButto
 };
 
 const EditorToolbar: React.FC = () => {
-   const theme = useTheme();
-   const classes = useStyles(theme);
+   const classes = useStyles();
    return (
       <Toolbar className={classes.toolbar} disableGutters variant="dense">
          <MarkButton format="bold" icon={<FormatBoldIcon fontSize="small" color="inherit" />} />

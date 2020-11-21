@@ -1,6 +1,6 @@
 import React from 'react';
 import { Editor, Transforms, Node } from 'slate';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
    blockQuote: {
@@ -47,8 +47,7 @@ interface ElementProps {
 }
 
 const Element: React.FC<ElementProps> = ({ attributes, children, element }: ElementProps) => {
-   const theme = useTheme();
-   const classes = useStyles(theme);
+   const classes = useStyles();
 
    switch (element.type) {
       case 'block-quote':

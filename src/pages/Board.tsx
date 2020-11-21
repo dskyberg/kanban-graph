@@ -1,20 +1,20 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Category, Item } from '../schema';
 import { serialize } from '../components/RichTextEditor';
 
 import { GET_PROJECT, UPDATE_CATEGORY, UPDATE_ITEM, CREATE_ITEM, DELETE_ITEM, ITEMS_BY_CATEGORY } from '../schema';
 import { useSnackbar } from 'notistack';
-
+import { crumbsState } from '../components/Crumbs';
 import { useQuery, useMutation } from '@apollo/client';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
-import { Box, Button, CircularProgress } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import CardContainer from '../components/CardContainer';
+import GraphError from '../components/GraphError';
+import LoadingError from '../components/LoadingError';
 
 const useStyles = makeStyles((theme) => ({
    root: {
       width: '100%',
-      flexGrow: 1,
       display: 'flex',
       flexDirection: 'column',
    },
@@ -27,24 +27,44 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       display: 'flex',
       flexDirection: 'row',
+      justifyContent: 'space-around',
    },
    category: {
+      width: '100%',
       margin: theme.spacing(2),
       padding: theme.spacing(2),
+      flexGrow: 1,
    },
    returnButton: {
       width: 200,
    },
 }));
 
-interface ParamTypes {
+type BoardSearchParams = {
    id: string;
-}
+   name: string;
+};
+
+const useBoardParams = (location: Location): BoardSearchParams => {
+   const search = new URLSearchParams(location.search);
+   const id = decodeURIComponent(search.get('id') ?? '');
+   const name = decodeURIComponent(search.get('name') ?? '');
+   return { id: id, name: name };
+};
 
 const Board: React.FC = () => {
-   const theme = useTheme();
-   const classes = useStyles(theme);
-   const { id } = useParams<ParamTypes>(); // Get route parameters
+   const classes = useStyles();
+   const location = useLocation();
+   const { id, name } = useBoardParams((location as unknown) as Location);
+
+   // * This side effect only needs to run on first render.
+   React.useEffect(() => {
+      crumbsState.resetWith([
+         { href: '/', label: 'Home', active: false },
+         { href: '/projects', label: 'Projects', active: false },
+         { href: '', label: name, active: true },
+      ]);
+   }, [name]);
    const { enqueueSnackbar } = useSnackbar();
 
    const { loading, error, data } = useQuery(GET_PROJECT, {
@@ -124,7 +144,9 @@ const Board: React.FC = () => {
          });
    };
 
-   const handleDeleteItem = (item: Item, category: Category): void => {
+   const handleDeleteItem = (item: Item | undefined, category: Category | undefined): void => {
+      if (item === undefined || category === undefined) return;
+
       deleteItem({
          variables: {
             id: item._id,
@@ -149,15 +171,10 @@ const Board: React.FC = () => {
    return (
       <div className={classes.root}>
          <div className={classes.board}>
-            {loading && (
-               <Box className={classes.loading} display="flex" justifyContent="center">
-                  <CircularProgress />
-               </Box>
-            )}
-            {error && <p>Error!</p>}
+            {loading && <LoadingError />}
+            {error && <GraphError error={error} />}
             {project &&
-               project.categories !== null &&
-               project.categories.map((category: Category) => {
+               project?.categories?.map((category: Category) => {
                   return (
                      <div
                         className={classes.category}
@@ -175,9 +192,6 @@ const Board: React.FC = () => {
                   );
                })}
          </div>
-         <Button variant="contained" color="primary" href="/projects" className={classes.returnButton}>
-            Return to Projects
-         </Button>
       </div>
    );
 };

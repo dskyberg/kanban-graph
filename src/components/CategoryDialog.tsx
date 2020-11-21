@@ -1,7 +1,7 @@
 import React from 'react';
 import { Category } from '../schema';
 
-import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
    Button,
    TextField,
@@ -41,8 +41,7 @@ interface CategoryDialogProps {
 }
 
 const CategoryDialog: React.FC<CategoryDialogProps> = ({ open, category, onCancel, onSave }: CategoryDialogProps) => {
-   const theme = useTheme();
-   const classes = useStyles(theme);
+   const classes = useStyles();
    const [title, setTitle] = React.useState(category !== undefined ? category.title : '');
    const [backgroundColor, setBackgroundColor] = React.useState(
       category !== undefined ? category.backgroundColor : '#ffffff',

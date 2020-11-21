@@ -4,7 +4,7 @@ import { ColorChangeHandler, CompactPicker } from 'react-color';
 
 import { Box } from '@material-ui/core';
 
-import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
    red,
    pink,
@@ -104,8 +104,7 @@ type ColorPickerProps = {
 };
 
 const ColorPicker: React.FC<ColorPickerProps> = ({ color: propColor, onChange }: ColorPickerProps) => {
-   const theme = useTheme();
-   const classes = useStyles(theme);
+   const classes = useStyles();
    const [displayPicker, setDisplayPicker] = React.useState(false);
    const [color, setColor] = React.useState(propColor);
    React.useEffect(() => {

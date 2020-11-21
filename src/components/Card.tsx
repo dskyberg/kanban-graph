@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Item } from '../schema';
 import RichTextEditor, { deserialize } from './RichTextEditor';
 
-import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Card as MUICard, CardContent } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,8 +34,7 @@ export interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ item, onClick }: CardProps) => {
-   const theme = useTheme();
-   const classes = useStyles(theme);
+   const classes = useStyles();
    const description = deserialize(item.description);
 
    return (

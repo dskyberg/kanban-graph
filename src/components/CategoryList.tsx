@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Category } from '../schema';
 
-import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableHead, TableRow, InputBase, IconButton } from '@material-ui/core';
 import { Save as SaveIcon, Undo as UndoIcon } from '@material-ui/icons';
 import ColorPicker from './ColorPicker';
@@ -22,8 +22,7 @@ interface CategoryRowProps {
 }
 
 const CategoryRow: React.FC<CategoryRowProps> = ({ category, onChange }: CategoryRowProps) => {
-   const theme = useTheme();
-   const classes = useStyles(theme);
+   const classes = useStyles();
    const [title, setTitle] = React.useState(category.title);
    const [titleBackgroundColor, setTitleBackgroundColor] = React.useState(category.titleBackgroundColor);
    const [backgroundColor, setBackgroundColor] = React.useState(category.backgroundColor);
@@ -101,8 +100,7 @@ interface CategoryListProps {
 }
 
 const CategoryList: React.FC<CategoryListProps> = ({ categories, onChange }: CategoryListProps) => {
-   const theme = useTheme();
-   const classes = useStyles(theme);
+   const classes = useStyles();
 
    return (
       <Table className={classes.root}>
