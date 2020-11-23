@@ -1,63 +1,39 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Category, Item } from '../schema';
-import { serialize } from '../components/RichTextEditor';
 
-import { GET_PROJECT, UPDATE_CATEGORY, UPDATE_ITEM, CREATE_ITEM, DELETE_ITEM, ITEMS_BY_CATEGORY } from '../schema';
-import { useSnackbar } from 'notistack';
-import { crumbsState } from '../components/Crumbs';
 import { useQuery, useMutation } from '@apollo/client';
-import { makeStyles } from '@material-ui/core/styles';
-import CardContainer from '../components/CardContainer';
-import GraphError from '../components/GraphError';
-import LoadingError from '../components/LoadingError';
+import { Category, Item } from '../../schema';
+import { serialize } from '../../components/RichTextEditor';
+import { GET_PROJECT, UPDATE_CATEGORY, UPDATE_ITEM, CREATE_ITEM, DELETE_ITEM, ITEMS_BY_CATEGORY } from '../../schema';
 
-const useStyles = makeStyles((theme) => ({
-   root: {
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-   },
-   loading: {
-      width: '100%',
-      marginBottom: 50,
-   },
-   board: {
-      width: '100%',
-      flexGrow: 1,
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-   },
-   category: {
-      width: '100%',
-      margin: theme.spacing(2),
-      padding: theme.spacing(2),
-      flexGrow: 1,
-   },
-   returnButton: {
-      width: 200,
-   },
-}));
+import { useSnackbar } from 'notistack';
+import { crumbsState } from '../../components/Crumbs';
+import Board, { BoardEffects } from './Board';
+import GraphError from '../../components/GraphError';
+import LoadingError from '../../components/LoadingError';
 
-type BoardSearchParams = {
+/*
+The useBoardParams hook parses the query parameters from the page URL.
+If the params aren't present, an empty string is returned ;
+*/
+interface BoardLocationParams {
    id: string;
    name: string;
-};
+}
 
-const useBoardParams = (location: Location): BoardSearchParams => {
+const useBoardParams = (location: Location): BoardLocationParams => {
    const search = new URLSearchParams(location.search);
    const id = decodeURIComponent(search.get('id') ?? '');
    const name = decodeURIComponent(search.get('name') ?? '');
    return { id: id, name: name };
 };
 
-const Board: React.FC = () => {
-   const classes = useStyles();
+export const BoardContainer: React.FC = () => {
    const location = useLocation();
    const { id, name } = useBoardParams((location as unknown) as Location);
 
-   // * This side effect only needs to run on first render.
+   // * This side effect only needs to run on first render. By passing
+   // * in [name], the effect will only be called if name changes.
    React.useEffect(() => {
       crumbsState.resetWith([
          { href: '/', label: 'Home', active: false },
@@ -72,13 +48,19 @@ const Board: React.FC = () => {
          id: id,
       },
    });
-   const [updateCategory] = useMutation(UPDATE_CATEGORY);
-   const [updateItem] = useMutation(UPDATE_ITEM);
-   const [createItem] = useMutation(CREATE_ITEM);
-   const [deleteItem] = useMutation(DELETE_ITEM);
 
-   const handleUpdateCategory = (category: Category): void => {
-      updateCategory({
+   /**
+    * Apollo client side effect hooks.
+    * These will map to effect handlers below and get passed into the
+    * Board component. The component will call them from various UI event handlers.
+    */
+   const [se_updateCategory] = useMutation(UPDATE_CATEGORY);
+   const [se_updateItem] = useMutation(UPDATE_ITEM);
+   const [se_createItem] = useMutation(CREATE_ITEM);
+   const [se_deleteItem] = useMutation(DELETE_ITEM);
+
+   const updateCategory = (category: Category): void => {
+      se_updateCategory({
          variables: {
             id: category._id,
             input: {
@@ -98,13 +80,13 @@ const Board: React.FC = () => {
          });
    };
 
-   const handleUpdateItem = (item: Item): void => {
+   const updateItem = (item: Item): void => {
       const input = {
          summary: item.summary,
          description: serialize(item.description),
          order: item.order,
       };
-      updateItem({
+      se_updateItem({
          variables: {
             id: item._id,
             input: input,
@@ -119,10 +101,10 @@ const Board: React.FC = () => {
          });
    };
 
-   const handleCreateItem = (category: Category, item: Item): void => {
+   const createItem = (item: Item, category: Category): void => {
       item.description = serialize(item.description);
       console.log('handleCreateItem:', category, item);
-      createItem({
+      se_createItem({
          variables: {
             categoryId: category._id,
             input: item,
@@ -144,13 +126,17 @@ const Board: React.FC = () => {
          });
    };
 
-   const handleDeleteItem = (item: Item | undefined, category: Category | undefined): void => {
+   const deleteItem = (item: Item | undefined, category: Category | undefined): void => {
       if (item === undefined || category === undefined) return;
 
-      deleteItem({
+      se_deleteItem({
          variables: {
             id: item._id,
          },
+         /* TODO
+           would be great to not have to refetch, just to get the Apollo Client
+          cache properly updated.
+          */
          refetchQueries: [
             {
                query: ITEMS_BY_CATEGORY,
@@ -167,32 +153,23 @@ const Board: React.FC = () => {
          });
    };
 
+   /**
+    * Bundle up the various effects handled by this container and pass them into
+    * the component.  The component will map them to events in the experience.
+    */
+   const effects: BoardEffects = {
+      createItem,
+      updateItem,
+      deleteItem,
+      updateCategory,
+   };
+
    const project = data?.Project[0] ?? null;
    return (
-      <div className={classes.root}>
-         <div className={classes.board}>
-            {loading && <LoadingError />}
-            {error && <GraphError error={error} />}
-            {project &&
-               project?.categories?.map((category: Category) => {
-                  return (
-                     <div
-                        className={classes.category}
-                        key={category.title}
-                        style={{ backgroundColor: category.backgroundColor }}
-                     >
-                        <CardContainer
-                           category={category}
-                           onCategoryChange={handleUpdateCategory}
-                           onItemChange={handleUpdateItem}
-                           onAddItem={handleCreateItem}
-                           onDeleteItem={handleDeleteItem}
-                        />
-                     </div>
-                  );
-               })}
-         </div>
-      </div>
+      <React.Fragment>
+         {loading && <LoadingError />}
+         {error && <GraphError error={error} />}
+         {project && <Board effects={effects} project={project} />}
+      </React.Fragment>
    );
 };
-export default Board;

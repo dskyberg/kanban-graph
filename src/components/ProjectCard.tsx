@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-interface ProjectCardProps {
+export interface ProjectCardProps {
    project: Project;
    onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, project: Project) => void;
 }
@@ -34,7 +34,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }: ProjectCa
    };
 
    const handleSaveDescription = (value: string): void => {
-      console.log('saving:', value);
+      console.log('ProjectCard saving description:', value);
    };
 
    return (
