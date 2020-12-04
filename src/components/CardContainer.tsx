@@ -70,10 +70,6 @@ const CardContainer: React.FC<CardContainerProps> = ({
    };
 
    const handleCardClicked = (targetItem: Item): void => {
-      console.group('handleCardClicked:');
-      console.log('item:', targetItem);
-      console.log('category', category);
-      console.groupEnd();
       cardDialog.setProps({
          open: true,
          item: targetItem,

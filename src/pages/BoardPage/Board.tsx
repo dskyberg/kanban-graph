@@ -38,6 +38,8 @@ export interface BoardEffects {
    updateCategory: (category: Category) => void;
 }
 
+// TODO Delete this
+/*
 type BoardSearchParams = {
    id: string;
    name: string;
@@ -49,7 +51,7 @@ const useBoardParams = (location: Location): BoardSearchParams => {
    const name = decodeURIComponent(search.get('name') ?? '');
    return { id: id, name: name };
 };
-
+*/
 interface BoardProps {
    effects: BoardEffects;
    project: Project;

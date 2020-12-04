@@ -1,8 +1,10 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { crumbsState } from '../../components/Crumbs';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import { useAuth } from '../../auth/AuthProvider';
 
 const useStyles = makeStyles((_) => ({
    appHeader: {
@@ -17,21 +19,26 @@ const useStyles = makeStyles((_) => ({
    },
 }));
 
-const Home: React.FC = () => {
+const Home: React.FC = observer(() => {
    const classes = useStyles();
+   const authStore = useAuth();
 
    React.useEffect(() => {
       crumbsState.resetWith([{ href: '', label: 'Home', active: true }]);
    });
 
+   const isLoggedIn = authStore.isLoggedIn;
+
    return (
       <header className={classes.appHeader}>
          <p>Simple demo of GraphQL in React.</p>
-         <Button color="primary" href="/projects">
-            Projects
-         </Button>
+         { isLoggedIn && (
+            <Button color="primary" href="/projects">
+               Projects
+            </Button>
+         )}
       </header>
    );
-};
+});
 
 export default Home;

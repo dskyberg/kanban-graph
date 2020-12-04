@@ -90,9 +90,9 @@ const CardDialog: React.FC = observer(() => {
    };
 
    const handleSave = (): void => {
+      cardDialogState.reset();
       const newItem = { ...item, ...{ summary }, ...{ description: serialize(description) } };
       onSave && onSave(newItem);
-      cardDialogState.reset();
    };
 
    const handleCancel = (): void => {
@@ -100,6 +100,10 @@ const CardDialog: React.FC = observer(() => {
       onCancel && onCancel();
    };
 
+   // ! If the dialog renders after the Slate content is reset, Slate will throw.
+   if (!open) {
+      return null;
+   }
    return (
       <React.Fragment>
          <Dialog open={open} maxWidth="lg">

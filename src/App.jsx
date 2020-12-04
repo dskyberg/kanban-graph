@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-
 import { SnackbarProvider } from 'notistack';
+import PrivateRoute from './components/PrivateRoute';
 import AppBar from './components/AppBar';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import BoardPage from './pages/BoardPage';
+import SignInRedirect from './pages/SignInRedirect';
+import SignOutRedirect from './pages/SignOutRedirect';
+
 import { CardDialogProvider } from './components/CardDialog';
 import { Container, IconButton } from '@material-ui/core';
 import { Close as CloseIcon } from '@material-ui/icons';
@@ -66,8 +69,10 @@ const App = () => {
                   <Container id="app-container" className={classes.container}>
                      <Switch>
                         <Route exact path="/" component={Home} />
-                        <Route exact path="/projects" component={Projects} />
-                        <Route exact path="/board" component={BoardPage} />
+                        <PrivateRoute exact path="/projects" component={Projects} />
+                        <PrivateRoute exact path="/board" component={BoardPage} />
+                        <Route exact path="/login/response" component={SignInRedirect} />
+                        <Route exact path="/logout/response" component={SignOutRedirect} />
                      </Switch>
                   </Container>
                </main>

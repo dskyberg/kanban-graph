@@ -30,15 +30,14 @@ interface ToolbarButtonProps {
 const BlockButton: React.FC<ToolbarButtonProps> = ({ format, icon }: ToolbarButtonProps) => {
    const editor = useSlate();
    const color = isBlockActive(editor, format) ? '#000000' : grey[400];
+
+   const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+      event.preventDefault();
+      toggleBlock(editor, format);
+   };
+
    return (
-      <IconButton
-         size="small"
-         style={{ color: color }}
-         onMouseDown={(event) => {
-            event.preventDefault();
-            toggleBlock(editor, format);
-         }}
-      >
+      <IconButton size="small" style={{ color: color }} onMouseDown={handleMouseDown}>
          {icon}
       </IconButton>
    );
@@ -48,15 +47,13 @@ const MarkButton: React.FC<ToolbarButtonProps> = ({ format, icon }: ToolbarButto
    const editor = useSlate();
    const color = isMarkActive(editor, format) ? '#000000' : grey[400];
 
+   const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+      event.preventDefault();
+      toggleMark(editor, format);
+   };
+
    return (
-      <IconButton
-         size="small"
-         style={{ color: color }}
-         onMouseDown={(event) => {
-            event.preventDefault();
-            toggleMark(editor, format);
-         }}
-      >
+      <IconButton size="small" style={{ color: color }} onMouseDown={handleMouseDown}>
          {icon}
       </IconButton>
    );

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { AuthProvider } from './auth/AuthProvider';
 
 import theme from './theme';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -18,7 +19,9 @@ ReactDOM.render(
          <CssBaseline />
          <Router>
             <ApolloProvider client={client}>
-               <App />
+               <AuthProvider>
+                  <App />
+               </AuthProvider>
             </ApolloProvider>
          </Router>
       </ThemeProvider>
