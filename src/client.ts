@@ -1,31 +1,32 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { authStore } from './auth/AuthProvider';
 import isEmpty from './util/isEmpty';
+import { AuthContext } from './auth/AuthContext';
 
 const httpLink = createHttpLink({
-   uri: 'http://localhost:9000/graphql',
+   uri: process.env.REACT_APP_GRAPHQL_URI,
 });
 
-const authLink = setContext((_, { headers }) => {
-   // get the authentication token from local storage if it exists
-   console.log('Apollo Client authorization:', authStore?.user?.access_token);
-   let authToken = {};
-   if (!isEmpty(authStore?.user?.access_token)) {
-      authToken = { authrization: `Bearer ${authStore?.user?.access_token}` };
-   }
-   // return the headers to the context so httpLink can read them
-   return {
-      headers: {
-         ...headers,
-         ...authToken,
-      },
-   };
-});
+export const useApolloClient = (auth: AuthContext | undefined): ApolloClient<NormalizedCacheObject> => {
+   const authLink = setContext((_, { headers }) => {
+      // get the authentication token from local storage if it exists
+   console.log('Apollo Client authorization:', auth?.user?.access_token);
+      let authHeader = {};
+      if (!isEmpty(auth?.user?.access_token)) {
+         authHeader = { authrization: `Bearer ${auth?.user?.access_token}` };
+      }
+      // return the headers to the context so httpLink can read them
+      return {
+         headers: {
+            ...headers,
+            ...authHeader,
+         },
+      };
+   });
 
-const client = new ApolloClient({
-   link: authLink.concat(httpLink),
-   cache: new InMemoryCache(),
-   connectToDevTools: true,
-});
-export default client;
+   return new ApolloClient({
+      link: authLink.concat(httpLink),
+      cache: new InMemoryCache(),
+      connectToDevTools: true,
+   });
+}

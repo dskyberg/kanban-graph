@@ -1,7 +1,7 @@
 import React from 'react';
 import queryString from 'query-string';
 import { useLocation, useHistory } from 'react-router-dom';
-import { useAuth } from '../auth/AuthProvider';
+import { useAuth } from '../auth';
 import isEmpty from '../util/isEmpty';
 
 
@@ -9,7 +9,6 @@ const SignInRedirect: React.FC = () => {
    const location = useLocation();
    const history = useHistory();
    const authStore = useAuth();
-   const [done, setDone] = React.useState(false);
 
    React.useEffect( () => {
       console.log('SignInRedirect location:', location);

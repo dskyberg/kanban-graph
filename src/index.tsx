@@ -7,9 +7,6 @@ import theme from './theme';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import { ApolloProvider } from '@apollo/client';
-import client from './client';
-
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
@@ -18,11 +15,9 @@ ReactDOM.render(
       <ThemeProvider theme={theme}>
          <CssBaseline />
          <Router>
-            <ApolloProvider client={client}>
-               <AuthProvider>
-                  <App />
-               </AuthProvider>
-            </ApolloProvider>
+            <AuthProvider>
+               <App />
+            </AuthProvider>
          </Router>
       </ThemeProvider>
    </React.StrictMode>,

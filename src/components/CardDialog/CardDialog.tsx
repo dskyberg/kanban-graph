@@ -54,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
    actions: {
       marginTop: 60,
    },
+   menu: {
+      zIndex: 1400,
+   },
 }));
 
 const CardDialog: React.FC = observer(() => {
@@ -138,11 +141,11 @@ const CardDialog: React.FC = observer(() => {
          </Dialog>
          <Menu
             id="simple-menu"
+            className={classes.menu}
             anchorEl={anchorEl}
             keepMounted
             open={Boolean(anchorEl)}
             onClose={(): void => handleMenu(undefined)}
-            style={{ zIndex: 1400 }}
          >
             {item !== undefined && (
                <MenuItem id="archive" onClick={handleMenuSelect}>

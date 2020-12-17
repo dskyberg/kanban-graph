@@ -10,10 +10,14 @@ import CardContainerHeader from './CardContainerHeader';
 import Card from './Card';
 import AddFab from '../components/AddFab';
 
+interface StyleProps {
+   rootBackgroundColor: string;
+}
+
 const useStyles = makeStyles((_) => ({
    root: {
       width: '100%',
-      backgroundColor: 'lightgrey',
+      backgroundColor: (props: StyleProps) => props.rootBackgroundColor,
       marginLeft: '10',
       marginRight: '10',
    },
@@ -39,7 +43,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
    onAddItem,
    onDeleteItem,
 }: CardContainerProps) => {
-   const classes = useStyles();
+   const classes = useStyles({rootBackgroundColor: category.backgroundColor});
    const cardDialog = useCardDialog();
 
    const { loading, error, data } = useQuery(GET_CATEGORY_ITEMS, {
@@ -84,7 +88,6 @@ const CardContainer: React.FC<CardContainerProps> = ({
             className={classes.root}
             display="flex"
             justifyContent="center"
-            style={{ backgroundColor: category.backgroundColor }}
          >
             <CircularProgress />
          </Box>
@@ -98,7 +101,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
    const members: Item[] = data.Category[0].items;
 
    return (
-      <div className={classes.root} style={{ backgroundColor: category.backgroundColor }}>
+      <div className={classes.root}>
          {!item && (
             <CardContainerHeader category={category} onChange={onCategoryChange} onAction={handleHeaderAction} />
          )}

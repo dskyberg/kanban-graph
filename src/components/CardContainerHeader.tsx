@@ -6,9 +6,13 @@ import { Typography, IconButton } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
 import CategoryDialog from './CategoryDialog';
 
+interface StyleProps {
+   backgroundColor?: string
+}
+
 const useStyles = makeStyles((theme) => ({
-   header: {
-      backgroundColor: theme.palette.primary.light,
+   root: {
+      backgroundColor: (props: StyleProps) => props?.backgroundColor ?? theme.palette.primary.light,
       color: 'black',
       padding: theme.spacing(2),
       marginBottom: theme.spacing(2),
@@ -40,7 +44,7 @@ const CardContainerHeader: React.FC<CardContainerHeaderProps> = ({
    onChange,
    onAction,
 }: CardContainerHeaderProps) => {
-   const classes = useStyles();
+   const classes = useStyles({backgroundColor: category.titleBackgroundColor});
    const [categoryDialogOpen, setCategoryDialogOpen] = React.useState(false);
    const dcRef = React.useRef<HTMLDivElement>(null);
 
@@ -62,12 +66,11 @@ const CardContainerHeader: React.FC<CardContainerHeaderProps> = ({
    };
 
    return (
-      <div>
+      <React.Fragment>
          <div
             ref={dcRef}
-            className={classes.header}
+            className={classes.root}
             id="card-container-header"
-            style={{ backgroundColor: category.titleBackgroundColor }}
          >
             <Typography align="center" gutterBottom={false} paragraph={false} className={classes.headerText}>
                {category.title}
@@ -86,7 +89,7 @@ const CardContainerHeader: React.FC<CardContainerHeaderProps> = ({
                setCategoryDialogOpen(false);
             }}
          />
-      </div>
+      </React.Fragment>
    );
 };
 export default React.memo(CardContainerHeader);

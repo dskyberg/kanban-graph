@@ -4,7 +4,7 @@ import { crumbsState } from '../../components/Crumbs';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import { useAuth } from '../../auth/AuthProvider';
+import { useAuth } from '../../auth';
 
 const useStyles = makeStyles((_) => ({
    appHeader: {

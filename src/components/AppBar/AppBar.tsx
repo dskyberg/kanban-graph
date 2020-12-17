@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '../../auth/AuthProvider';
+import { useAuth } from '../../auth';
 import { observer } from 'mobx-react-lite';
 
 import { AppBar as MuiAppBar, Toolbar, Typography, IconButton, SvgIcon, Tooltip } from '@material-ui/core';
