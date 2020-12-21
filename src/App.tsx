@@ -43,11 +43,9 @@ const App = () => {
    const classes = useStyles();
    const auth = useAuth();
    const client = useApolloClient(auth);
-   const notistackRef = React.createRef();
+   const notistackRef = React.createRef<SnackbarProvider>();
 
-   const onClickDismiss = (key) => () => {
-      notistackRef.current.closeSnackbar(key);
-   };
+   const onClickDismiss = (key: string | number) => () => notistackRef?.current?.closeSnackbar(key);
 
    return (
       <ApolloProvider client={client}>
