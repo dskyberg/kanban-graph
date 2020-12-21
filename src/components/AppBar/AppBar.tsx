@@ -32,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
 const AppBar: React.FC = observer(() => {
    const classes = useStyles();
    const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-   const authStore = useAuth();
+   const auth = useAuth();
 
    const handleAction = (action: string): void => {
       setAnchorEl(null);
       action === 'profile' && console.log('handleAction: profile');
-      action === 'login' && authStore.login();
-      action === 'logout' && authStore.logout();
+      action === 'login' && auth.login();
+      action === 'logout' && auth.logout();
    };
 
    const handleClose = (): void => {
@@ -48,8 +48,8 @@ const AppBar: React.FC = observer(() => {
       setAnchorEl(event.currentTarget);
    };
 
-   const isLoggedIn = authStore.isLoggedIn;
-   const tooltip = `Logged in as ${authStore?.user?.profile.name}`;
+   const isLoggedIn = auth.isLoggedIn;
+   const tooltip = `Logged in as ${auth?.user?.profile.name}`;
    const modeIcon = isLoggedIn ? (
       <Tooltip title={tooltip}>
          <IdentityIcon />
@@ -72,7 +72,7 @@ const AppBar: React.FC = observer(() => {
             <Typography variant="h6" className={classes.title}>
                GraphQL Kanban
             </Typography>
-            <IconButton color="inherit" onClick={modeHandler}>
+            <IconButton aria-label={!isLoggedIn ? 'login' : 'identity'} color="inherit" onClick={modeHandler}>
                {modeIcon}
             </IconButton>
             <ProfileMenu anchorEl={anchorEl} onAction={handleAction} onClose={handleClose} />

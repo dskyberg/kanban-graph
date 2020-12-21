@@ -10,7 +10,7 @@ const httpLink = createHttpLink({
 export const useApolloClient = (auth: AuthContext | undefined): ApolloClient<NormalizedCacheObject> => {
    const authLink = setContext((_, { headers }) => {
       // get the authentication token from local storage if it exists
-   console.log('Apollo Client authorization:', auth?.user?.access_token);
+   //console.log('Apollo Client authorization:', auth?.user?.access_token);
       let authHeader = {};
       if (!isEmpty(auth?.user?.access_token)) {
          authHeader = { authrization: `Bearer ${auth?.user?.access_token}` };

@@ -76,7 +76,7 @@ const CardContainerHeader: React.FC<CardContainerHeaderProps> = ({
                {category.title}
             </Typography>
             <span>
-               <IconButton onClick={handleAddClicked}>
+               <IconButton aria-label="Add Icon" onClick={handleAddClicked}>
                   <AddIcon />
                </IconButton>
             </span>

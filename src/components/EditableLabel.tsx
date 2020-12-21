@@ -108,6 +108,7 @@ const EditableLabel: React.FC<EditableLabelProps> = ({
             />
             <Divider className={classes.divider} orientation="vertical" />
             <IconButton
+               aria-label="Save Icon"
                color="primary"
                className={classes.iconButton}
                onClick={handleSaveClick}

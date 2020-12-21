@@ -119,7 +119,7 @@ const CardDialog: React.FC = observer(() => {
                   onChange={handleInputChange}
                   className={classes.summary}
                />
-               <IconButton onClick={handleMenu}>
+               <IconButton  aria-label="open menu" onClick={handleMenu}>
                   <MoreVertIcon />
                </IconButton>
             </DialogTitle>
@@ -133,8 +133,8 @@ const CardDialog: React.FC = observer(() => {
                </FormGroup>
             </DialogContent>
             <DialogActions className={classes.actions}>
-               <Button onClick={handleCancel}>Cancel</Button>
-               <Button color="primary" onClick={handleSave}>
+               <Button aria-label="cancel" onClick={handleCancel}>Cancel</Button>
+               <Button aria-label="save" color="primary" onClick={handleSave}>
                   Update
                </Button>
             </DialogActions>

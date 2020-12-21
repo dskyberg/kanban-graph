@@ -26,9 +26,6 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
       flexGrow: 1,
    },
-   returnButton: {
-      width: 200,
-   },
 }));
 
 export interface BoardEffects {

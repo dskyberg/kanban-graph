@@ -83,10 +83,10 @@ const CategoryRow: React.FC<CategoryRowProps> = ({ category, onChange }: Categor
             />
          </TableCell>
          <TableCell>
-            <IconButton onClick={handleUpdate}>
+            <IconButton aria-label="Save Icon" onClick={handleUpdate}>
                <SaveIcon />
             </IconButton>
-            <IconButton onClick={handleUndo}>
+            <IconButton aria-label="Undo Icon"onClick={handleUndo}>
                <UndoIcon />
             </IconButton>
          </TableCell>

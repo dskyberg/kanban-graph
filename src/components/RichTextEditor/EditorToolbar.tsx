@@ -37,7 +37,7 @@ const BlockButton: React.FC<ToolbarButtonProps> = ({ format, icon }: ToolbarButt
    };
 
    return (
-      <IconButton size="small" style={{ color: color }} onMouseDown={handleMouseDown}>
+      <IconButton aria-label={format} size="small" style={{ color: color }} onMouseDown={handleMouseDown}>
          {icon}
       </IconButton>
    );
@@ -53,7 +53,7 @@ const MarkButton: React.FC<ToolbarButtonProps> = ({ format, icon }: ToolbarButto
    };
 
    return (
-      <IconButton size="small" style={{ color: color }} onMouseDown={handleMouseDown}>
+      <IconButton aria-label={format} size="small" style={{ color: color }} onMouseDown={handleMouseDown}>
          {icon}
       </IconButton>
    );

@@ -54,7 +54,7 @@ const App = () => {
          <SnackbarProvider
             ref={notistackRef}
             action={(key) => (
-               <IconButton onClick={onClickDismiss(key)}>
+               <IconButton aria-label="Close Icon" onClick={onClickDismiss(key)}>
                   <CloseIcon />
                </IconButton>
             )}

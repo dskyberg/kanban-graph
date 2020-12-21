@@ -6,6 +6,25 @@ This client SPA leverages the Apollo Server in [apollo-koa-graphql](https://gith
 
 The app also leverages my demo of [oidc-provider](https://github.com/dskyberg/oidc-server) for authentication.
 
+Download this repo and install the dependencies
+````bash
+$ git clone https://github.com/dskyberg/kanban-graph.git
+...
+$ cd kanban-graph
+$ npm i
+````
+### Create a .env file
+Open a file in the root apollo-koa-graphql folder called `.env` and add the following.
+Then change what you want.  Be sure the redirectUri values match what is registered
+in your OIDC server.
+
+````code
+REACT_APP_GRAPHQL_URI=http://localhost:9000/graphql
+REACT_APP_AUTHORITY=http://localhost:3082
+#REACT_APP_AUTHORITY=http://localhost:8080/auth/realms/myrealm
+REACT_APP_CLIENT_ID=test_app
+REACT_APP_REDIRECT_URI=http://localhost:3000/callback
+````
 
 ### `npm start`
 

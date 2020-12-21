@@ -123,8 +123,8 @@ const CategoryDialog: React.FC<CategoryDialogProps> = ({ open, category, onCance
             </FormGroup>
          </DialogContent>
          <DialogActions className={classes.actions}>
-            <Button onClick={handleCancel}>Cancel</Button>
-            <Button color="primary" onClick={handleUpdate}>
+            <Button aria-label="cancel"onClick={handleCancel}>Cancel</Button>
+            <Button aria-label="update"color="primary" onClick={handleUpdate}>
                Update
             </Button>
          </DialogActions>

@@ -33,7 +33,7 @@ const Home: React.FC = observer(() => {
       <header className={classes.appHeader}>
          <p>Simple demo of GraphQL in React.</p>
          { isLoggedIn && (
-            <Button color="primary" href="/projects">
+            <Button aria-label="projects" color="primary" href="/projects">
                Projects
             </Button>
          )}

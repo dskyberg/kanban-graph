@@ -10,6 +10,9 @@ interface PrivateRouteProps {
 const PrivateRoute: React.FC<PrivateRouteProps> = (props: PrivateRouteProps) => {
    const authStore = useAuth();
    const isLoggedIn = authStore.isLoggedIn;
+   if(!isLoggedIn) {
+      console.log('PrivateRoutes require authentication');
+   }
    return isLoggedIn ? <Route {...props} /> : <Redirect to="/" />;
 };
 export default PrivateRoute;

@@ -43,7 +43,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }: ProjectCa
          <CardContent></CardContent>
          <EditableLabel value={project.description ?? ''} onSave={handleSaveDescription} />
          <CardActions>
-            <Button variant="contained" color="primary" onClick={handleClick}>
+            <Button aria-label="Hit it" variant="contained" color="primary" onClick={handleClick}>
                Hit it
             </Button>
          </CardActions>

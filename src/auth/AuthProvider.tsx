@@ -20,14 +20,13 @@ interface AuthProviderProps {
 }
 const authContext = new AuthContext();
 
-
 /**
  * Standard pattern for establishing a React context.  This provides the HOC
  * for class components and the hook for function components.  Since this is a
  * single instance store, it is created once, and then provided to both the
  * createContext, for the hook and to the Context.Provider for the HOC.
  */
-export const context = React.createContext<AuthContext| null>(null);
+export const context = React.createContext<AuthContext | null>(null);
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children, location = window.location }) => {
    React.useEffect(() => {
@@ -52,3 +51,21 @@ export const useAuth = (): AuthContext => {
    }
    return cxt;
 };
+
+export interface AuthContextProps {
+   auth: AuthContext;
+}
+
+export function withAuth<P extends AuthContextProps>(
+   Component: React.ComponentType<P>,
+): React.ComponentType<Omit<P, keyof AuthContextProps>> {
+   const displayName = `withAuth(${Component.displayName || Component.name})`;
+   const C: React.FC<Omit<P, keyof AuthContextProps>> = (props) => {
+      const auth = useAuth();
+      return <Component {...(props as P)} {...auth} />;
+   };
+
+   C.displayName = displayName;
+
+   return C;
+}

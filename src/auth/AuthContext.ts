@@ -18,10 +18,11 @@ type ClaimsParameter = {
  * @returns {User | null} A new User if the stored token exists, or null.
  */
 const loadUserFromStorage = (): User | null => {
+   console.log('loading user from storage');
    const oidcStorage = sessionStorage.getItem(
       `oidc.user:${process.env.REACT_APP_AUTHORITY}:${process.env.REACT_APP_CLIENT_ID}`,
    );
-   console.log('Got the following from storage:', oidcStorage);
+   //console.log('Got the following from storage:', oidcStorage);
    if (typeof oidcStorage === 'string') {
       return new User(JSON.parse(oidcStorage));
    }
