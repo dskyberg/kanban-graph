@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 import { useAuth } from '../../auth';
 import { observer } from 'mobx-react-lite';
 
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AppBar: React.FC = observer(() => {
+   const { t } = useTranslation();
    const classes = useStyles();
    const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
    const auth = useAuth();
@@ -49,7 +51,7 @@ const AppBar: React.FC = observer(() => {
    };
 
    const isLoggedIn = auth.isLoggedIn;
-   const tooltip = `Logged in as ${auth?.user?.profile.name}`;
+   const tooltip = `${t('Logged in as')} ${auth?.user?.profile.name}`;
    const modeIcon = isLoggedIn ? (
       <Tooltip title={tooltip}>
          <IdentityIcon />
